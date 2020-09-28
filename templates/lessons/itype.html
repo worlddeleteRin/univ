@@ -152,6 +152,7 @@
         console.log(subject, itype)
         e.preventDefault()
         const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        console.log(csrftoken)
         console.log('clicked on it')
         // current_file = $("#fileinput").prop('files')
         var f = $("#fileinput")[0].files[0]

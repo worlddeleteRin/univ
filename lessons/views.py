@@ -4,6 +4,9 @@ from django.http import JsonResponse, HttpResponse
 from django.core.files.base import ContentFile
 import urllib
 import os
+from django.core.files.storage import default_storage
+from univ.settings import * 
+
 
 def index(request):
     all_subjects = Subject.objects.all()
@@ -38,7 +41,9 @@ def itype(request, subject_id, itype_id):
     })
 
 def add_item_ajax(request):
-    path = 'static/files/'
+    path = STATICFILES_DIRS[0] + '/files/'
+    # path = 'static/files/'
+    print(path)
     current_file = request.FILES['file']
     print(request.FILES['file'])
 
@@ -47,13 +52,11 @@ def add_item_ajax(request):
     name = str(request.POST['name'])
     current_subject = Subject.objects.get(id = subject)
     current_itype = Itemtypes.objects.get(id = itype)
-
-
+    print('host is',request.get_host())
     full_name = path + str(current_file)
+    # default_storage.save(name, current_file)
     fout = open(full_name, 'wb+')
-    # file_content = ContentFile(current_file.read())
     cf = current_file.read()
-    # for chunk in file_content.chunk():
     fout.write(cf)
     fout.close()
     item_size = os.path.getsize(full_name)
@@ -125,7 +128,7 @@ def delete_item_ajax(request):
     password = request.GET['password']
     item_id = request.GET['item_id']
     if password == '343845':
-        path = 'static/files/'
+        path = STATICFILES_DIRS[0] + '/files/'
         current_item = Item.objects.get(id = item_id)
         os.remove(path + current_item.itemurl)
         current_item.delete()
