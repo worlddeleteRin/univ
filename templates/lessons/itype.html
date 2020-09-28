@@ -1,0 +1,197 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="add__form__wrapper">
+        <div class="add__form__title">
+            Новый док
+        </div>
+        <form class="add__form__wrapper__form"
+        enctype="multipart/form-data"
+        id = "ajax_upload_form"
+        method="POST">
+        {% csrf_token %}
+        
+        <label for="fileinput" class="main__form__label">
+            Выбери док
+        </label>
+        <div id="file_error" class="form__error__msg">
+            Де док?
+        </div>
+        <input type="file" id="fileinput">
+        <label for="filename" class="main__form__label">
+            Дай норм название
+        </label>
+        <div id="name_error" class="form__error__msg">
+            Де название?
+        </div>
+        <input type="text" id="filename" placeholder="Норм название">
+        <input type="submit" value="Добавить"
+        id="itemsubmit_btn">
+        </form> 
+
+    </div>
+    <div class="add__form__wrapper__close">
+    </div>
+
+    <div class="item__container__wrapper">
+        {% include './blocks/items_list.html' %}
+    </div>
+
+    <div class="add__item__button" id="add_item_item">
+        <i class="gg-add"></i>
+    </div>
+
+
+    <!-- Password form block -->
+    <div class="pass__form__wrap">
+        <div class="add__form__title">
+            Удалить ток админу можно
+        </div>
+        <label for="password_input"
+        class="main__form__label" id="password_input_label">
+        Пароль
+        </label>
+        <div id="password_error" class="form__error__msg">
+            почему так пусто?
+        </div>
+        <div id="admin_error" class="form__error__msg">
+           Шото ты не похож на админа
+        </div>
+        <input type="password" class="password_inputfield"
+        id="password_input"
+        name="password"
+        placeholder="Не стесняйся">
+        <div class="password__send__container">
+            <span class="password__send__btn"
+            id="password_send_btn" value="">
+            Подтвердить
+            </span>
+        </div>
+    </div>
+<div class="pass__form__block__wrap">
+</div>
+    <!-- Password form block end -->
+
+
+<script>
+    $("#password_send_btn").click(function() {
+    $("#password_error").removeClass("show")
+        password = $("#password_input").val()
+        if (password.length < 1) {
+            $("#password_error").addClass("show")
+            $("#admin_error").removeClass("show")
+        } else {
+            var item_id = parseInt($(this).attr("value"))
+            $.ajax({
+                url: "{% url 'lessons:delete_item_ajax' %}",
+                data: {
+                    'password': password,
+                    'item_id': item_id,
+                }, 
+                success: function(data) {
+                    msg = data['message']
+                    console.log(msg)
+                    if (msg == 'invalid') {
+                        $("#admin_error").addClass("show")
+                    }
+                    if (msg == 'deleted') {
+                        loadItems()
+                    }
+                }
+            })
+        }
+    })
+    function loadItems() {
+        var subject_id = "{{ current_subject }}"
+        var itype = "{{ current_itype }}"
+        $(".item__container__wrapper").html('').load(
+            "{% url 'lessons:load_item_ajax' %}?subject_id="+
+            subject_id + "&itype_id=" + itype,
+        )
+        $(".pass__form__wrap").removeClass("show")
+        $(".pass__form__block__wrap").removeClass("show")
+    }
+
+    $(".pass__form__block__wrap").click(function() {
+        $(".pass__form__wrap").removeClass("show")
+        $(".pass__form__block__wrap").removeClass("show") 
+    })
+
+    $(".item__container__block__main").click(function() {
+        window.location = "{% static 'files/' %}" + $(this).attr("value");    
+    })
+    $("#filename").keypress(function() {
+        if ($("#filename").hasClass("pressed")) {
+
+        } else {
+            $("#filename").addClass("pressed")
+        setTimeout(function() {
+            $("#filename").removeClass("pressed") 
+        }, 400)
+        }
+        
+    })
+    $("#add_item_item").click(function() {
+        $(".add__form__wrapper").addClass("show")
+        $(".add__form__wrapper__close").addClass("show")
+    })
+    $(".add__form__wrapper__close").click(function() {
+        $(".add__form__wrapper").removeClass("show")
+        $(".add__form__wrapper__close").removeClass("show")
+    })
+
+    $("#ajax_upload_form").submit(function(e) {
+        $("#file_error").removeClass("show")
+        $("#name_error").removeClass("show")
+        var name = $("#filename").val()
+        console.log('name is: ', name)
+        var subject = "{{ current_subject }}"
+        var itype = "{{ current_itype }}"
+        console.log(subject, itype)
+        e.preventDefault()
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        console.log('clicked on it')
+        // current_file = $("#fileinput").prop('files')
+        var f = $("#fileinput")[0].files[0]
+        console.log('file is', f)
+        var formData = new FormData()
+        formData.append('file', f)
+        formData.append('subject', subject)
+        formData.append('itype', itype)
+        formData.append('name', name)
+        // consolelog(current_file)
+        // if (current_file.length > 0) {
+        if (typeof f !== 'undefined') {
+            if (name.length < 1) {
+                $("#name_error").addClass("show")
+            } else {
+            $.ajax({
+                headers: {'X-CSRFToken': csrftoken},
+                url: "{% url 'lessons:add_item_ajax' %}",
+                type: "POST",
+                cache: false,
+                enctype: 'multipart/form-data',
+                contentType: false,
+                processData: false,
+                data: formData,
+                success: function(data) {
+                    console.log(data['message'])
+                    loadItems()
+                    $(".add__form__wrapper").removeClass("show")
+                    $(".add__form__wrapper__close").removeClass("show")
+                },
+            },
+            );
+        }
+        } else {
+            console.log('не указан файл')
+            $("#file_error").addClass("show")
+        }
+        // }
+    });
+    
+</script>
+
+{% endblock content %}

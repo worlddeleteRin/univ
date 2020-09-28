@@ -1,0 +1,37 @@
+{% for type in itypes  %}
+        <div class="main_type_block" id="{{ type.id }}">
+            
+            <a href="{% url 'lessons:itype' subject.id type.id %}"
+            class="subject__wrapper__card">
+                <div class="subject__wrapper__card__name">
+                    <span>
+                    {{ type.name }}
+                    </span>
+                </div>
+            </a>
+
+            <div 
+        class="delete__itype__block">
+            <span value="{{type.id}}" class="delete__itype">
+                <i class="gg-close-o"></i>
+            </span>
+        </div>
+
+
+         </div>
+
+         {% empty %}
+        <div class="no__info__message">
+    Пока блоков нет. <br> Можешь добавить первый ヾ( ￣O￣)ツ</div>
+        {% endfor %}
+
+<script>
+$(".delete__itype").click(function() {
+         $(".pass__form__wrap").addClass("show")
+         $(".pass__form__block__wrap").addClass("show")
+         var itype_id = $(this).attr("value")
+         $("#password_send_btn").attr("value", itype_id)
+    })
+</script>
+
+        

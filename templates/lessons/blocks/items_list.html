@@ -1,0 +1,55 @@
+{% load static %}
+{% load tags %}
+
+{% for item in items %}
+
+    <div class="item__container__block" value="{{item.itemurl}}">
+        <div class="item__container__block__main" value="{{item.itemurl}}">
+
+        
+        <div class="item__icon">
+            <i class="gg-file-document"></i>
+        </div>
+        <div class="item__info">
+        <a class="item__name__link"
+        href="{% static 'files/'  %}{{ item.itemurl }}">
+             {{ item.name }}
+        </a>
+        <div class="item__subname">
+            {{ item.itemurl }}
+        </div>
+        <div class="item__size">
+        Размер:
+        <span>
+            {{ item.itemsize }} МБ
+        </span>
+        </div>
+            <div class="item__created">
+                <span>
+                    {{ item.date }}
+                </span>
+            </div>
+            
+        </div>
+    </div>
+        <div class="delete__item__block" value="{{ item.id }}">
+            <span id="delete_item__block__link">
+                Удалить
+            </span>
+        </div>
+    </div>
+        
+    {% empty %}
+        <div class="no__info__message">
+            Пока файлов нет. <br> Можешь добавить первый ヾ( ￣O￣)ツ</div>
+    {% endfor %}
+
+<script>
+$(".delete__item__block").click(function() {
+        console.log('clicked on delete')
+        var current_value = $(this).attr("value")
+        $("#password_send_btn").attr("value", current_value)
+        $(".pass__form__wrap").addClass("show")
+        $(".pass__form__block__wrap").addClass("show")
+    })
+</script>

@@ -1,0 +1,31 @@
+{% load static %}
+{% load tags %}
+
+<div class="all__subjects__wrap">
+
+    {% for subject in subjects %}
+        <a href="{% url 'lessons:subject' subject.id %}"
+        class="all__subject__card">
+            <div class="all__subject__card__img">
+                {% get_image_url subject.imgurl  as imagename %}
+                <img src="{% static 'images/' %}{{ imagename }}" alt="">
+            </div>
+
+            <div class="all__subjects__card__info">
+            
+                <div class="all__subjects__card__name">
+                    {{ subject.name }}
+                </div>
+                <div class="all__subjects__card__teachers">
+                    {% for teacher in subject.s_teacher.all  %}
+                            <span>
+                            {{ teacher.name }}
+                            </span>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </a>
+    {% endfor %}
+
+</div>

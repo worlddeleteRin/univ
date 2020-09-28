@@ -1,0 +1,149 @@
+{% extends './base.html' %}
+
+{% block content %}
+
+    <div class="add__form__wrapper">
+        
+        <div class="add__form__title">
+            Новый раздел
+        </div>
+        <label for="itype_input"
+        id="itype_input_label">
+        Название блока
+        </label>
+        <div id="itype_error" class="form__error__msg">
+            Де название?
+        </div>
+        <input type="text"
+        name="itype_name"
+        id = "itype_input"
+        placeholder="Давай, кратко и понятно">
+        </input>
+        <input type="submit" value="Создать"id="create_itype_btn">
+
+    </div>
+    <div class="add__form__wrapper__close">
+    </div>
+    
+    <div class="subject__wrapper">
+        {% include './blocks/itypes_items.html' %}
+    </div>
+
+    <div class="add__item__button" id="add_item_itype">
+        <i class="gg-add"></i>
+    </div>
+
+
+    <div class="pass__form__wrap">
+        <div class="add__form__title">
+            Ток админу можно
+        </div>
+        <label for="password_input"
+        class="main__form__label" id="password_input_label">
+        Пароль
+        </label>
+        <div id="password_error" class="form__error__msg">
+            почему так пусто?
+        </div>
+        <div id="admin_error" class="form__error__msg">
+           Шото ты не похож на админа
+        </div>
+        <input type="password" class="password_inputfield"
+        id="password_input"
+        name="password"
+        placeholder="Не стесняйся">
+        <div class="password__send__container">
+            <span class="password__send__btn"
+            id="password_send_btn" value="">
+            Подтвердить
+            </span>
+        </div>
+    </div>
+<div class="pass__form__block__wrap">
+</div>
+
+    <script>
+
+    $(".pass__form__block__wrap").click(function() {
+         $(".pass__form__wrap").removeClass("show")
+         $(".pass__form__block__wrap").removeClass("show")
+    })
+    
+
+     $("#password_send_btn").click(function() {
+         $("#password_error").removeClass("show")
+         $("#admin_error").removeClass("show")
+            var password = $("#password_input").val()
+            if (password.length < 1) {
+                $("#password_error").addClass("show")
+            } else {
+                itype_id = $(this).attr("value")
+                console.log(itype_id)
+                $.ajax({
+                    url: "{% url 'lessons:delete_itype_ajax' %}",
+                    data: {
+                        'itype': itype_id,
+                        'password': password,
+                    },
+                    success: function(data) {
+                        msg = data['message']
+                        console.log(msg)
+                        if (msg == 'invalid') {
+                            $("#admin_error").addClass("show")
+                        }
+                        if (msg == 'ok') {
+                            var s = $(".main_type_block#" + itype_id)
+                            $(s).remove()
+                            $(".pass__form__wrap").removeClass("show")
+                            $(".pass__form__block__wrap").removeClass("show")
+                            loaditypes()
+                        }
+                    }
+                })
+            }
+        })
+
+
+        $(".add__form__wrapper__close").click(function() {
+            $(".add__form__wrapper").removeClass("show")
+            $(".add__form__wrapper__close").removeClass("show")
+        })
+        $("#add_item_itype").click(function() {
+            $(".add__form__wrapper").addClass("show")
+            $(".add__form__wrapper__close").addClass("show")
+        })
+        $("#create_itype_btn").click(function() {
+            $("#itype_error").removeClass("show")
+            itype = $("#itype_input").val()
+            console.log(itype)
+            if (itype.length < 1) {
+                $("#itype_error").addClass("show")
+            } else {
+                var subject = "{{ subject.id }}"
+                $.ajax({
+                    url: "{% url 'lessons:add_itype_ajax' %}",
+                    data: {
+                        'itype': itype,
+                        'subject': subject,
+                    },
+                    success: function(data) {
+                        console.log(data['message'])
+                        loaditypes()
+                        $(".add__form__wrapper").removeClass("show")
+                        $(".add__form__wrapper__close").removeClass("show")
+                    }
+                })
+            }
+        })
+
+        function loaditypes() {
+            var c_s = parseInt("{{ subject.id }}")
+            $(".subject__wrapper").html('').load(
+                "{% url 'lessons:addblock_items_ajax' %}?subject_id=" + c_s,
+            ), function(data) {
+                console.log(data)
+            };
+        };
+    </script>
+
+{% endblock content %}

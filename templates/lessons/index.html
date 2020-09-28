@@ -1,0 +1,14 @@
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div>
+        <audio controls>
+  <source src="{% static 'i_know.mp3' %}" type="audio/mp3">
+    </audio>
+    </div>
+    
+    {% include './blocks/lessons.html' %}
+
+{% endblock content %}

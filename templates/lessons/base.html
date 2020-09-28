@@ -1,0 +1,28 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Какая учеба?</title>
+
+<link href='https://css.gg/css' rel='stylesheet'>
+
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="{% static 'js/jquery-3.5.1.slim.min.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    
+</head>
+<body>
+
+    <div class="main__container">
+    
+    {% block content %}
+    {% endblock content %}
+
+    </div>
+
+    {% block javascript %}
+    {% endblock javascript %}
+    
+</body>
+</html>
