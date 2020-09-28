@@ -119,9 +119,7 @@
         $(".pass__form__block__wrap").removeClass("show") 
     })
 
-    $(".item__container__block__main").click(function() {
-        window.location = "{% static 'files/' %}" + $(this).attr("value");    
-    })
+    
     $("#filename").keypress(function() {
         if ($("#filename").hasClass("pressed")) {
 

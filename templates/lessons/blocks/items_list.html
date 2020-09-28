@@ -11,8 +11,7 @@
             <i class="gg-file-document"></i>
         </div>
         <div class="item__info">
-        <a class="item__name__link"
-        href="{% static 'files/'  %}{{ item.itemurl }}">
+        <a class="item__name__link" value="{{ item.itemurl }}">
              {{ item.name }}
         </a>
         <div class="item__subname">
@@ -45,6 +44,20 @@
     {% endfor %}
 
 <script>
+$(".item__container__block__main").click(function(e) {
+    e.preventDefault()
+    var link = $(this).attr("value")
+    link = decodeURI(link)
+    console.log(link)
+        window.location = "{% static 'files/' %}" + $(this).attr("value");    
+    })
+$(".item__name__link").click(function(e) {
+    e.preventDefault()
+    var link = $(this).attr("value")
+    link = decodeURI(link)
+    console.log(link)
+        window.location = "{% static 'files/' %}" + $(this).attr("value");    
+})
 $(".delete__item__block").click(function() {
         console.log('clicked on delete')
         var current_value = $(this).attr("value")
