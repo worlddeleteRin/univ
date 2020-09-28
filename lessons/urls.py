@@ -15,4 +15,5 @@ urlpatterns = [
     path('addblock_items_ajax', views.addblock_items_ajax, name="addblock_items_ajax"),
     path('delete_item_ajax', views.delete_item_ajax, name="delete_item_ajax"),
     path('load_item_ajax', views.load_item_ajax, name="load_item_ajax"),
+    path('item/<int:item_id>', views.item, name="item"),
 ]

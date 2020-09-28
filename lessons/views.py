@@ -6,6 +6,7 @@ import urllib
 import os
 from django.core.files.storage import default_storage
 from univ.settings import * 
+from django.http import FileResponse
 
 
 def index(request):
@@ -151,3 +152,11 @@ def load_item_ajax(request):
     return render(request, 'lessons/blocks/items_list.html', {
         'items': items,
     })
+
+def item(request, item_id):
+    file_path = path = STATICFILES_DIRS[0] + '/files/'
+    current_item = Item.objects.get(id = item_id)
+    file = open(file_path + current_item.itemurl, 'rb')
+    response = FileResponse(file)
+    print(response)
+    return response

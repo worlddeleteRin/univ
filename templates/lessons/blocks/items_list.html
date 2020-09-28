@@ -3,15 +3,17 @@
 
 {% for item in items %}
 
-    <div class="item__container__block" value="{{item.itemurl}}">
-        <div class="item__container__block__main" value="{{item.itemurl}}">
+    <div class="item__container__block" value="{{item.id}}">
 
+        <div class="item__container__block__main" value="{{item.id}}">
         
         <div class="item__icon">
             <i class="gg-file-document"></i>
         </div>
+
         <div class="item__info">
-        <a class="item__name__link" value="{{ item.itemurl }}">
+        <a class="item__name__link" value="{{ item.itemurl }}"
+        href="{% url 'lessons:item' item.id %}">
              {{ item.name }}
         </a>
         <div class="item__subname">
@@ -31,11 +33,16 @@
             
         </div>
     </div>
+
+
+
+
         <div class="delete__item__block" value="{{ item.id }}">
             <span id="delete_item__block__link">
                 Удалить
             </span>
         </div>
+        
     </div>
         
     {% empty %}
@@ -45,22 +52,15 @@
 
 <script>
 $(".item__container__block__main").click(function(e) {
-    window.alert('start opening file')
-    e.preventDefault()
-    var link = decodeURI($(this).attr("value"))
-    window.alert(link)
-    console.log(link)
-    window.alert("{% static 'files/' %}" + link)
-    window.location = "{% static 'files/' %}" + link;    
 
     })
 $(".item__name__link").click(function(e) {
-    // e.preventDefault()
+    {% comment %} // e.preventDefault()
     // var link = $(this).attr("value")
     // console.log(link)
     // link = decodeURI(link)
     // console.log(link)
-    //     window.location = "{% static 'files/' %}" + link;    
+    //     window.location = "{% static 'files/' %}" + link;     {% endcomment %}
 })
 $(".delete__item__block").click(function() {
         console.log('clicked on delete')
