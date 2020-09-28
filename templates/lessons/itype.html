@@ -76,6 +76,13 @@
 
 
 <script>
+    $(document).ready(function() {
+        loadItems()
+    }) 
+    $(window).on('popstate', function(event) {
+        loadItems()
+});
+    
     $("#password_send_btn").click(function() {
     $("#password_error").removeClass("show")
         password = $("#password_input").val()

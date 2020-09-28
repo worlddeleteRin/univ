@@ -64,6 +64,13 @@
 
     <script>
 
+    $(document).ready(function() {
+        loaditypes()
+    }) 
+    $(window).on('popstate', function(event) {
+        loaditypes()
+});
+
     $(".pass__form__block__wrap").click(function() {
          $(".pass__form__wrap").removeClass("show")
          $(".pass__form__block__wrap").removeClass("show")
