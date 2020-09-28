@@ -47,9 +47,8 @@
 $(".item__container__block__main").click(function(e) {
     window.alert('start opening file')
     e.preventDefault()
-    var link = $(this).attr("value")
-    console.log(link)
-    link = decodeURI(link)
+    var link = decodeURI($(this).attr("value"))
+    window.alert(link)
     console.log(link)
     window.location = "{% static 'files/' %}" + link;    
     })
