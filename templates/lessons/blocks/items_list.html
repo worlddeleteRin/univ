@@ -49,14 +49,14 @@ $(".item__container__block__main").click(function(e) {
     var link = $(this).attr("value")
     link = decodeURI(link)
     console.log(link)
-        window.location = "{% static 'files/' %}" + $(this).attr("value");    
+        window.location = "{% static 'files/' %}" + link;    
     })
 $(".item__name__link").click(function(e) {
     e.preventDefault()
     var link = $(this).attr("value")
     link = decodeURI(link)
     console.log(link)
-        window.location = "{% static 'files/' %}" + $(this).attr("value");    
+        window.location = "{% static 'files/' %}" + link;    
 })
 $(".delete__item__block").click(function() {
         console.log('clicked on delete')
