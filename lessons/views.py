@@ -125,7 +125,9 @@ def delete_item_ajax(request):
     password = request.GET['password']
     item_id = request.GET['item_id']
     if password == '343845':
+        path = 'static/files/'
         current_item = Item.objects.get(id = item_id)
+        os.remove(path + current_item.itemurl)
         current_item.delete()
         return JsonResponse({
             'message': 'deleted',
