@@ -45,18 +45,21 @@
 
 <script>
 $(".item__container__block__main").click(function(e) {
+    console.log('start opening file')
     e.preventDefault()
     var link = $(this).attr("value")
+    console.log(link)
     link = decodeURI(link)
     console.log(link)
-        window.location = "{% static 'files/' %}" + link;    
+    window.location = "{% static 'files/' %}" + link;    
     })
 $(".item__name__link").click(function(e) {
-    e.preventDefault()
-    var link = $(this).attr("value")
-    link = decodeURI(link)
-    console.log(link)
-        window.location = "{% static 'files/' %}" + link;    
+    // e.preventDefault()
+    // var link = $(this).attr("value")
+    // console.log(link)
+    // link = decodeURI(link)
+    // console.log(link)
+    //     window.location = "{% static 'files/' %}" + link;    
 })
 $(".delete__item__block").click(function() {
         console.log('clicked on delete')
